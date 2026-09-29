@@ -1,32 +1,11 @@
-//
-//  TestBookApp.swift
-//  TestBook
-//
-//  Created by Syrine Dridi on 28/09/2026.
-//
-
 import SwiftUI
-import SwiftData
 
 @main
 struct TestBookApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
+    @State private var viewModel = AppContainer.makeBooksViewModel()
+    @State private var favorites = AppContainer.makeFavoritesViewModel()
 
     var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
-        .modelContainer(sharedModelContainer)
+        WindowGroup { ContentView(viewModel: viewModel, favorites: favorites) }
     }
 }
